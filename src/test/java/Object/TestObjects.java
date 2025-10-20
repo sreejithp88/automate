@@ -21,7 +21,8 @@ public class TestObjects {
     @FindBy(id = "twotabsearchtextbox")
     public WebElement Search ;
 
-    @FindBy(xpath = "((//div[@role='listitem'])[2]//a)[1]")
+//    @FindBy(xpath = "((//div[@role='listitem'])[2]//a)[1]")
+    @FindBy(xpath = "//div[@role='listitem'][2]/div/div/div//div/span//div/a/h2")
     public WebElement seconditem ;
 
 

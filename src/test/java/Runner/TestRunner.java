@@ -10,7 +10,7 @@ import io.cucumber.junit.CucumberOptions;
         glue = {"StepDefenition"},
         plugin = {
                 "pretty",
-                "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm:src/test/java/Reports"
+                "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
 
         },
         monochrome = true

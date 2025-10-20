@@ -21,9 +21,14 @@ public class Base {
             // Headless only in CI or if environment variable is set
             if (System.getenv("CI") != null || System.getProperty("headless") != null) {
                 options.addArguments("--headless=new");
+                options.addArguments("--window-size=1920,1080");
                 options.addArguments("--disable-gpu");
                 options.addArguments("--no-sandbox");
                 options.addArguments("--disable-dev-shm-usage");
+                options.addArguments("--disable-extensions");
+                options.addArguments("--disable-infobars");
+                options.addArguments("--start-maximized");
+
             }
 
             // Set large window size to avoid zero-size elements

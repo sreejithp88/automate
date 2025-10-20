@@ -2,16 +2,21 @@ package Action;
 
 import Base.Base;
 import Utility.Screenshot;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import Object.TestObjects;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.awt.*;
+import java.time.Duration;
 import java.util.Iterator;
 import java.util.Set;
 import TestData.amazdata;
 import Utility.JsonReader;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 public class  TestAction extends Base {
@@ -57,7 +62,13 @@ public class  TestAction extends Base {
         Thread.sleep(5000);
         Screenshot.TakeScreenshots(System.getProperty("currentFeature"),"Search_Result");
         String mainwindow = driver.getWindowHandle();
-        testObjects.seconditem.click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        WebElement secondItem = wait.until(ExpectedConditions.elementToBeClickable(testObjects.seconditem));
+
+// scroll into view if needed
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", secondItem);
+        secondItem.click();
+//        testObjects.seconditem.click();
         Thread.sleep(10000);
         Screenshot.TakeScreenshots(System.getProperty("currentFeature"),"Product_Selected");
         Set<String> handles = driver.getWindowHandles();

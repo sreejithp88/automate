@@ -18,13 +18,18 @@ public class Base {
         if (driver == null) {
             ChromeOptions options = new ChromeOptions();
 
-            // Headless mode for CI
-            options.addArguments("--headless=new");  // Chrome 111+ uses "new" headless mode
-            options.addArguments("--no-sandbox");
-            options.addArguments("--disable-dev-shm-usage");
-            options.addArguments("--disable-gpu");
+            // Headless only in CI or if environment variable is set
+            if (System.getenv("CI") != null || System.getProperty("headless") != null) {
+                options.addArguments("--headless=new");
+                options.addArguments("--disable-gpu");
+                options.addArguments("--no-sandbox");
+                options.addArguments("--disable-dev-shm-usage");
+            }
 
-            // Unique profile to avoid user-data-dir conflict
+            // Set large window size to avoid zero-size elements
+            options.addArguments("--window-size=1920,1080");
+
+            // Use unique user data dir to avoid session conflicts in CI
             options.addArguments("--user-data-dir=/tmp/chrome-" + System.currentTimeMillis());
 
             driver = new ChromeDriver(options);

@@ -28,6 +28,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-m2
 
+      - name: Install Google Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
       - name: Run Tests
         run: mvn clean test
 
@@ -38,4 +43,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
-          path: src/test/Reports/
+          path: target/site/allure-maven-plugin

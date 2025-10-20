@@ -62,7 +62,7 @@ public class  TestAction extends Base {
         Thread.sleep(5000);
         Screenshot.TakeScreenshots(System.getProperty("currentFeature"),"Search_Result");
         String mainwindow = driver.getWindowHandle();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         WebElement secondItem = wait.until(ExpectedConditions.elementToBeClickable(testObjects.seconditem));
 
 // scroll into view if needed

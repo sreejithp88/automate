@@ -22,8 +22,10 @@ public class TestObjects {
     public WebElement Search ;
 
 //    @FindBy(xpath = "((//div[@role='listitem'])[2]//a)[1]")
-    @FindBy(xpath = "//div[@role='listitem'][2]/div/div/div//div/span//div/a/h2")
+//    @FindBy(xpath = "//div[@role='listitem'][2]/div/div/div//div/span//div/a/h2")
+    @FindBy(xpath = "//div[@data-component-type='s-search-result'][2]//a/h2")
     public WebElement seconditem ;
+
 
 
 

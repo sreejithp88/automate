@@ -38,7 +38,7 @@ public class  TestAction extends Base {
         testObjects = new TestObjects(driver);
         driver.get(amazdata.getUrl());
         Thread.sleep(5000);
-        Screenshot.TakeScreenshots(System.getProperty("currentFeature"),"HOME_PAGE");
+        Screenshot.TakeScreenshots("HOME_PAGE");
 
     }
 
@@ -53,14 +53,14 @@ public class  TestAction extends Base {
             System.out.println("Continue shopping button not found — skipping...");
         }
         testObjects.Search.sendKeys(amazdata.getSearchProduct());
-        Screenshot.TakeScreenshots(System.getProperty("currentFeature"),"Product_Search");
+        Screenshot.TakeScreenshots("Product_Search");
         Thread.sleep(1010);
         testObjects.Search.sendKeys(Keys.ENTER);
     }
 
     public void selectproductgettext() throws InterruptedException {
         Thread.sleep(5000);
-        Screenshot.TakeScreenshots(System.getProperty("currentFeature"),"Search_Result");
+        Screenshot.TakeScreenshots("Search_Result");
         String mainwindow = driver.getWindowHandle();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         WebElement secondItem = wait.until(ExpectedConditions.elementToBeClickable(testObjects.seconditem));
@@ -70,7 +70,7 @@ public class  TestAction extends Base {
         secondItem.click();
 //        testObjects.seconditem.click();
         Thread.sleep(10000);
-        Screenshot.TakeScreenshots(System.getProperty("currentFeature"),"Product_Selected");
+        Screenshot.TakeScreenshots("Product_Selected");
         Set<String> handles = driver.getWindowHandles();
         Iterator<String> windows = handles.iterator();
 //    if (windows.size() > 1) {

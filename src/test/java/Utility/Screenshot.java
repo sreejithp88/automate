@@ -30,7 +30,7 @@ public class Screenshot extends Base {
     }
 
     // Take screenshot and store in current scenario folder
-    public static String TakeScreenshots(String name,String screenshotName) {
+    public static String TakeScreenshots(String screenshotName) {
         if (driver == null) return null;
 
         String timestamp = new SimpleDateFormat("HHmmss").format(new Date());

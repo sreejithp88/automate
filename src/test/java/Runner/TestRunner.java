@@ -8,7 +8,8 @@ import io.cucumber.junit.CucumberOptions;
 @CucumberOptions(
         features = "src/test/java/Feature",
         glue = {"StepDefenition"},
-        plugin = {"pretty", "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
+        plugin = {"pretty",
+                "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
                 "json:target/allure-results/cucumber.json"
 
         },

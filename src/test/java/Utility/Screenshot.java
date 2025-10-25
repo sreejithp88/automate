@@ -8,37 +8,63 @@ import org.openqa.selenium.TakesScreenshot;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
 public class Screenshot extends Base {
 
-   public static String TakeScreenshots (String featureName , String screenshotName){
+    private static final String baseFolder = System.getProperty("user.dir") + "/src/test/java/Screenshot/";
+    private static final Map<String, List<String>> scenarioScreenshots = new HashMap<>();
+    private static String currentFeature = "";
+    private static String currentScenario = "";
 
-       String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-       String safeFeature = (featureName == null || featureName.isEmpty()) ? "UnknownFeature" : featureName;
-       String fileName = screenshotName + "_" + timestamp + ".png";
-       safeFeature = safeFeature + timestamp;
+    // Called by Hooks before each scenario
+    public static void startScenario(String featureName, String scenarioName) {
+        currentFeature = featureName.replaceAll("[^a-zA-Z0-9]", "_");
+        currentScenario = scenarioName.replaceAll("[^a-zA-Z0-9]", "_");
 
-       String basePath = System.getProperty("user.dir") + "/src/test/java/Screenshot/";
+        String folderPath = baseFolder + currentFeature + "/" + currentScenario + "/";
+        File folder = new File(folderPath);
+        if (!folder.exists()) folder.mkdirs();
 
-       // Folder specific to the feature
-       String featureFolderPath = basePath + safeFeature + "/";
-       File featureFolder = new File(featureFolderPath);
-       if (!featureFolder.exists()) {
-           featureFolder.mkdirs();
-       }
+        scenarioScreenshots.put(currentScenario, new ArrayList<>());
+    }
 
-       // Take screenshot
-       File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-       String filePath = featureFolderPath + fileName;
+    // Take screenshot and store in current scenario folder
+    public static String TakeScreenshots(String name,String screenshotName) {
+        if (driver == null) return null;
 
-       try {
-           FileUtils.copyFile(srcFile, new File(filePath));
-           System.out.println("✅ Screenshot saved: " + filePath);
-       } catch (IOException e) {
-           System.out.println("❌ Failed to save screenshot: " + e.getMessage());
-       }
+        String timestamp = new SimpleDateFormat("HHmmss").format(new Date());
+        String fileName = (screenshotName + "_" + timestamp + ".png").replaceAll("[^a-zA-Z0-9_.]", "_");
 
-       return filePath;
-   }
+        String folderPath = baseFolder + currentFeature + "/" + currentScenario + "/";
+        String filePath = folderPath + fileName;
+
+        try {
+            File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(src, new File(filePath));
+
+            scenarioScreenshots.get(currentScenario).add(filePath);
+            System.out.println("✅ Screenshot saved: " + filePath);
+        } catch (IOException e) {
+            System.out.println("❌ Error saving screenshot: " + e.getMessage());
+        }
+
+        return filePath;
+    }
+
+    public static Map<String, List<String>> getScenarioScreenshots() {
+        return scenarioScreenshots;
+    }
+
+    public static String getCurrentFeature() {
+        return currentFeature;
+    }
+
+    public static String getCurrentScenario() {
+        return currentScenario;
+    }
+
+    public static String getCurrentScenarioFolder() {
+        return baseFolder + currentFeature + "/" + currentScenario + "/";
+    }
 }

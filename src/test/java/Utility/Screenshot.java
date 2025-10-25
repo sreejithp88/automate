@@ -21,8 +21,9 @@ public class Screenshot extends Base {
     public static void startScenario(String featureName, String scenarioName) {
         currentFeature = featureName.replaceAll("[^a-zA-Z0-9]", "_");
         currentScenario = scenarioName.replaceAll("[^a-zA-Z0-9]", "_");
+        String timestamp = new SimpleDateFormat("HHmmss").format(new Date());
 
-        String folderPath = baseFolder + currentFeature + "/" + currentScenario + "/";
+        String folderPath = baseFolder + currentFeature + "/" + currentScenario + timestamp + "/";
         File folder = new File(folderPath);
         if (!folder.exists()) folder.mkdirs();
 

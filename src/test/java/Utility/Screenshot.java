@@ -16,14 +16,15 @@ public class Screenshot extends Base {
     private static final Map<String, List<String>> scenarioScreenshots = new HashMap<>();
     private static String currentFeature = "";
     private static String currentScenario = "";
+    private static String timestamps = "";
 
     // Called by Hooks before each scenario
     public static void startScenario(String featureName, String scenarioName) {
         currentFeature = featureName.replaceAll("[^a-zA-Z0-9]", "_");
         currentScenario = scenarioName.replaceAll("[^a-zA-Z0-9]", "_");
-        String timestamp = new SimpleDateFormat("HHmmss").format(new Date());
+        timestamps = new SimpleDateFormat("HHmmss").format(new Date());
 
-        String folderPath = baseFolder + currentFeature + "/" + currentScenario + timestamp + "/";
+        String folderPath = baseFolder + currentFeature + "/" + currentScenario + timestamps + "/";
         File folder = new File(folderPath);
         if (!folder.exists()) folder.mkdirs();
 
@@ -37,14 +38,16 @@ public class Screenshot extends Base {
         String timestamp = new SimpleDateFormat("HHmmss").format(new Date());
         String fileName = (screenshotName + "_" + timestamp + ".png").replaceAll("[^a-zA-Z0-9_.]", "_");
 
-        String folderPath = baseFolder + currentFeature + "/" + currentScenario + "/";
+        String folderPath = baseFolder + currentFeature + "/" + currentScenario + timestamps +  "/";
         String filePath = folderPath + fileName;
 
         try {
             File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
             FileUtils.copyFile(src, new File(filePath));
 
-            scenarioScreenshots.get(currentScenario).add(filePath);
+            // ✅ Ensure list is initialized
+            scenarioScreenshots.computeIfAbsent(currentScenario, k -> new ArrayList<>()).add(filePath);
+
             System.out.println("✅ Screenshot saved: " + filePath);
         } catch (IOException e) {
             System.out.println("❌ Error saving screenshot: " + e.getMessage());
@@ -66,6 +69,6 @@ public class Screenshot extends Base {
     }
 
     public static String getCurrentScenarioFolder() {
-        return baseFolder + currentFeature + "/" + currentScenario + "/";
+        return baseFolder + currentFeature + "/" + currentScenario + timestamps + "/";
     }
 }

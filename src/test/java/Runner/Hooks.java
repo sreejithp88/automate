@@ -7,6 +7,8 @@ import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 
+import java.util.List;
+
 public class Hooks extends Base{
 
     @Before
@@ -19,11 +21,12 @@ public class Hooks extends Base{
     @After
     public void afterScenario(Scenario scenario) {
         try {
-            ScreenshotPDFGenerator.createPdfFromScreenshots(
-                    Screenshot.getCurrentScenarioFolder(),
-                    Screenshot.getScenarioScreenshots().get(Screenshot.getCurrentScenario())
-            );
-            System.out.println("📄 PDF created for scenario: " + scenario.getName());
+            List<String> screenshots = Screenshot.getScenarioScreenshots().get(Screenshot.getCurrentScenario());
+            if (screenshots != null && !screenshots.isEmpty()) {
+                ScreenshotPDFGenerator.createPdfFromScreenshots(
+                        Screenshot.getCurrentScenarioFolder(), screenshots);
+                System.out.println("📄 PDF created for scenario: " + scenario.getName());
+            }
         } catch (Exception e) {
             System.out.println("⚠️ PDF generation failed: " + e.getMessage());
         }
